@@ -820,7 +820,7 @@ void ModuleSanitizerCoverage::InjectTraceForSwitch(
     Function &, ArrayRef<Instruction *> SwitchTraceTargets) {
   for (auto *I : SwitchTraceTargets) {
     if (SwitchInst *SI = dyn_cast<SwitchInst>(I)) {
-      IRBuilder<> IRB(I);
+      InstrumentationIRBuilder IRB(I);
       SmallVector<Constant *, 16> Initializers;
       Value *Cond = SI->getCondition();
       if (Cond->getType()->getScalarSizeInBits() >
@@ -921,7 +921,7 @@ void ModuleSanitizerCoverage::InjectTraceForCmp(
     Function &, ArrayRef<Instruction *> CmpTraceTargets) {
   for (auto *I : CmpTraceTargets) {
     if (ICmpInst *ICMP = dyn_cast<ICmpInst>(I)) {
-      IRBuilder<> IRB(ICMP);
+      InstrumentationIRBuilder IRB(ICMP);
       Value *A0 = ICMP->getOperand(0);
       Value *A1 = ICMP->getOperand(1);
       if (!A0->getType()->isIntegerTy())
